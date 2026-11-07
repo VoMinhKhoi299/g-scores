@@ -19,7 +19,4 @@ public class SubjectEntity {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
-
-    @Column(name = "group_code", length = 5, nullable = false)
-    private String groupCode;
 }

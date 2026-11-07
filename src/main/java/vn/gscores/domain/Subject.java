@@ -1,26 +1,26 @@
 package vn.gscores.domain;
 
-import vn.gscores.entity.Student;
-
+/**
+ * The nine exam subjects. The code matches both the column name in the raw
+ * CSV file and the subject_code column in the database.
+ */
 public enum Subject {
-    MATH("toan", "Toán", SubjectGroup.A),
-    LITERATURE("ngu_van", "Ngữ văn", SubjectGroup.B),
-    FOREIGN_LANGUAGE("ngoai_ngu", "Ngoại ngữ", SubjectGroup.C),
-    PHYSICS("vat_li", "Vật lý", SubjectGroup.A),
-    CHEMISTRY("hoa_hoc", "Hóa học", SubjectGroup.A),
-    BIOLOGY("sinh_hoc", "Sinh học", SubjectGroup.C),
-    HISTORY("lich_su", "Lịch sử", SubjectGroup.B),
-    GEOGRAPHY("dia_li", "Địa lý", SubjectGroup.B),
-    CIVIC_EDUCATION("gdcd", "GDCD", SubjectGroup.B);
+    MATH("toan", "Toán"),
+    LITERATURE("ngu_van", "Ngữ văn"),
+    FOREIGN_LANGUAGE("ngoai_ngu", "Ngoại ngữ"),
+    PHYSICS("vat_li", "Vật lý"),
+    CHEMISTRY("hoa_hoc", "Hóa học"),
+    BIOLOGY("sinh_hoc", "Sinh học"),
+    HISTORY("lich_su", "Lịch sử"),
+    GEOGRAPHY("dia_li", "Địa lý"),
+    CIVIC_EDUCATION("gdcd", "GDCD");
 
     private final String code;
     private final String name;
-    private final SubjectGroup group;
 
-    Subject(String code, String name, SubjectGroup group) {
+    Subject(String code, String name) {
         this.code = code;
         this.name = name;
-        this.group = group;
     }
 
     public String getCode() {
@@ -29,13 +29,5 @@ public enum Subject {
 
     public String getName() {
         return name;
-    }
-
-    public SubjectGroup getGroup() {
-        return group;
-    }
-
-    public boolean isTakenBy(Student student) {
-        return student.getScore(this) != null;
     }
 }

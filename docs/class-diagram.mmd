@@ -5,19 +5,16 @@ classDiagram
         <<enumeration>>
         +String code
         +String name
-        +SubjectGroup group
         +getCode() String
         +getName() String
-        +getGroup() SubjectGroup
-        +isTakenBy(Student) boolean
     }
 
     class SubjectGroup {
-        <<enumeration>>
-        A
-        B
-        C
-        +getSubjects() List~Subject~
+        <<record>>
+        +String code
+        +String name
+        +List~Subject~ subjects
+        +standard() List~SubjectGroup~
     }
 
     class ScoreBand {
@@ -26,6 +23,7 @@ classDiagram
         GOOD
         FAIR
         POOR
+        +BigDecimal minScore
         +of(BigDecimal) ScoreBand
     }
 
@@ -43,24 +41,32 @@ classDiagram
     class Student {
         <<entity>> students
         +String sbd PK
-        +BigDecimal math
-        +BigDecimal literature
-        +BigDecimal foreignLanguage
-        +BigDecimal physics
-        +BigDecimal chemistry
-        +BigDecimal biology
-        +BigDecimal history
-        +BigDecimal geography
-        +BigDecimal civicEducation
         +ForeignLanguage foreignLanguageCode
-        +getScore(Subject) BigDecimal
+    }
+
+    class StudentScore {
+        <<entity>> student_scores
+        +String sbd PK
+        +String subjectCode PK
+        +BigDecimal score
     }
 
     class SubjectEntity {
         <<entity>> subjects
         +String code PK
         +String name
-        +String groupCode
+    }
+
+    class SubjectGroupEntity {
+        <<entity>> subject_groups
+        +String groupCode PK
+        +String name
+    }
+
+    class GroupSubjectEntity {
+        <<entity>> group_subjects
+        +String groupCode PK
+        +String subjectCode PK
     }
 
     class ScoreDistribution {
@@ -71,18 +77,13 @@ classDiagram
         +BigDecimal percentage
     }
 
-    class GroupATop {
-        <<entity>> group_a_top
+    class GroupTopStudent {
+        <<entity>> group_top_students
+        +String groupCode PK
         +int rank PK
-        +String sbd FK
-        +BigDecimal math
-        +BigDecimal physics
-        +BigDecimal chemistry
+        +String sbd
         +BigDecimal total
         +BigDecimal avgScore
-        +int mathRank
-        +int physicsRank
-        +int chemistryRank
     }
 
     class DatasetMetadata {
@@ -98,9 +99,25 @@ classDiagram
         +findById(String) Optional~Student~
     }
 
+    class StudentScoreRepository {
+        <<interface>>
+        +findBySbd(String) List~StudentScore~
+        +findScoresBySbd(String) List~Object[]~
+    }
+
     class SubjectRepository {
         <<interface>>
         +findAll() List~SubjectEntity~
+    }
+
+    class SubjectGroupRepository {
+        <<interface>>
+        +findAll() List~SubjectGroupEntity~
+    }
+
+    class GroupSubjectRepository {
+        <<interface>>
+        +findByGroupCode(String) List~GroupSubjectEntity~
     }
 
     class ScoreDistributionRepository {
@@ -108,9 +125,9 @@ classDiagram
         +findAll() List~ScoreDistribution~
     }
 
-    class GroupATopRepository {
+    class GroupTopStudentRepository {
         <<interface>>
-        +findAll() List~GroupATop~
+        +findByGroupCodeOrderByRank(String) List~GroupTopStudent~
     }
 
     class DatasetMetadataRepository {
@@ -118,13 +135,19 @@ classDiagram
         +findById(Integer) Optional~DatasetMetadata~
     }
 
-    Subject --> SubjectGroup : belongs to
-    SubjectGroup --> Subject : getSubjects
-    Student ..> Subject : getScore(subject)
+    SubjectGroup --> Subject : subjects
+    StudentScore --> Subject : subjectCode
+    GroupSubjectEntity --> SubjectGroupEntity : groupCode
+    GroupSubjectEntity --> SubjectEntity : subjectCode
+    ScoreDistribution --> SubjectEntity : subjectCode
+    GroupTopStudent --> SubjectGroupEntity : groupCode
     Student --> ForeignLanguage : foreignLanguageCode
+
     StudentRepository --> Student : manages
+    StudentScoreRepository --> StudentScore : manages
     SubjectRepository --> SubjectEntity : manages
+    SubjectGroupRepository --> SubjectGroupEntity : manages
+    GroupSubjectRepository --> GroupSubjectEntity : manages
     ScoreDistributionRepository --> ScoreDistribution : manages
-    GroupATopRepository --> GroupATop : manages
+    GroupTopStudentRepository --> GroupTopStudent : manages
     DatasetMetadataRepository --> DatasetMetadata : manages
-    ScoreBand ..> ScoreBand : of(score)
