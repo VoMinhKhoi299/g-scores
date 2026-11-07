@@ -1,0 +1,50 @@
+erDiagram
+    subjects {
+        varchar code PK "khớp code của enum Subject"
+        varchar name "tên tiếng Việt"
+        varchar group_code "CHECK IN (A,B,C)"
+    }
+
+    students {
+        varchar sbd PK "8 chữ số, CHECK regex"
+        numeric toan "nullable = không thi môn"
+        numeric ngu_van
+        numeric ngoai_ngu
+        numeric vat_li
+        numeric hoa_hoc
+        numeric sinh_hoc
+        numeric lich_su
+        numeric dia_li
+        numeric gdcd "9 cột điểm, CHECK 0..10"
+        varchar ma_ngoai_ngu "N1..N7 hoặc NULL"
+    }
+
+    score_distribution {
+        varchar subject_code PK "FK -> subjects.code"
+        varchar band PK "CHECK VERY_GOOD/GOOD/FAIR/POOR"
+        bigint student_count "số thí sinh thuộc mức"
+        numeric percentage "tỷ lệ % trên số người thi môn"
+    }
+
+    group_a_top {
+        int rank PK "1..10, unique"
+        varchar sbd FK "ON DELETE CASCADE"
+        numeric toan NOT NULL
+        numeric vat_li NOT NULL
+        numeric hoa_hoc NOT NULL
+        numeric total "CHECK = toan+vat_li+hoa_hoc"
+        numeric avg_score "CHECK = round(total/3)"
+        int toan_rank "dense rank trên tập đủ 3 môn"
+        int vat_li_rank
+        int hoa_hoc_rank
+    }
+
+    dataset_metadata {
+        smallint id PK "CHECK id = 1 (luôn 1 dòng)"
+        varchar source_file "tên file CSV nguồn"
+        bigint total_rows "1061605"
+        timestamptz seeded_at
+    }
+
+    subjects ||--o{ score_distribution : "1 môn có 4 mức điểm"
+    students ||--o{ group_a_top : "1 HS vào top nhiều nhất 1 lần"

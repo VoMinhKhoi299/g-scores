@@ -1,0 +1,32 @@
+flowchart TD
+    CSV["dataset/diem_thi_thpt_2024.csv<br/>1.061.605 dòng x 11 cột"]
+    FLYWAY["Flyway V1__init.sql<br/>tạo 5 bảng"]
+    SEEDER["CsvSeeder<br/>1 transaction"]
+    STU[("students<br/>1.061.605 dòng")]
+    SUB[("subjects<br/>9 dòng")]
+    DIST[("score_distribution<br/>36 dòng")]
+    TOP[("group_a_top<br/>10 dòng")]
+    META[("dataset_metadata<br/>1 dòng")]
+
+    CSV -->|"COPY (bulk insert)"| SEEDER
+    SEEDER -->|"Subject.values()"| SUB
+    SEEDER --> STU
+    SEEDER -->|"đếm 4 mức x 9 môn"| DIST
+    SEEDER -->|"tính tổng + tie-break"| TOP
+    SEEDER --> META
+    FLYWAY -.->|"chạy trước"| SEEDER
+
+    subgraph API["REST API"]
+        A1["GET /api/scores/{sbd}"]
+        A2["GET /api/reports/distribution"]
+        A3["GET /api/reports/group-a-top"]
+        A4["GET /api/dashboard/summary"]
+    end
+
+    STU --> A1
+    DIST --> A2
+    TOP --> A3
+    META --> A4
+
+    classDef store fill:#EDE9E1,stroke:#1B2437,stroke-width:1px
+    class STU,SUB,DIST,TOP,META store

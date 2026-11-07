@@ -1,0 +1,136 @@
+classDiagram
+    direction LR
+
+    class Subject {
+        <<enumeration>>
+        +String code
+        +String name
+        +SubjectGroup group
+        +getCode() String
+        +getName() String
+        +getGroup() SubjectGroup
+        +isTakenBy(Student) boolean
+    }
+
+    class SubjectGroup {
+        <<enumeration>>
+        A
+        B
+        C
+        +getSubjects() List~Subject~
+    }
+
+    class ScoreBand {
+        <<enumeration>>
+        VERY_GOOD
+        GOOD
+        FAIR
+        POOR
+        +of(BigDecimal) ScoreBand
+    }
+
+    class ForeignLanguage {
+        <<enumeration>>
+        N1
+        N2
+        N3
+        N4
+        N5
+        N6
+        N7
+        +String code
+        +int level
+        +String displayName
+        +getCode() String
+        +getLevel() int
+        +getDisplayName() String
+    }
+
+    class Student {
+        <<entity>> students
+        +String sbd PK
+        +BigDecimal math
+        +BigDecimal literature
+        +BigDecimal foreignLanguage
+        +BigDecimal physics
+        +BigDecimal chemistry
+        +BigDecimal biology
+        +BigDecimal history
+        +BigDecimal geography
+        +BigDecimal civicEducation
+        +ForeignLanguage foreignLanguageCode
+        +getScore(Subject) BigDecimal
+    }
+
+    class SubjectEntity {
+        <<entity>> subjects
+        +String code PK
+        +String name
+        +String groupCode
+    }
+
+    class ScoreDistribution {
+        <<entity>> score_distribution
+        +String subjectCode PK
+        +String band PK
+        +long studentCount
+        +BigDecimal percentage
+    }
+
+    class GroupATop {
+        <<entity>> group_a_top
+        +int rank PK
+        +String sbd FK
+        +BigDecimal math
+        +BigDecimal physics
+        +BigDecimal chemistry
+        +BigDecimal total
+        +BigDecimal avgScore
+        +int mathRank
+        +int physicsRank
+        +int chemistryRank
+    }
+
+    class DatasetMetadata {
+        <<entity>> dataset_metadata
+        +int id PK
+        +String sourceFile
+        +long totalRows
+        +OffsetDateTime seededAt
+    }
+
+    class StudentRepository {
+        <<interface>>
+        +findById(String) Optional~Student~
+    }
+
+    class SubjectRepository {
+        <<interface>>
+        +findAll() List~SubjectEntity~
+    }
+
+    class ScoreDistributionRepository {
+        <<interface>>
+        +findAll() List~ScoreDistribution~
+    }
+
+    class GroupATopRepository {
+        <<interface>>
+        +findAll() List~GroupATop~
+    }
+
+    class DatasetMetadataRepository {
+        <<interface>>
+        +findById(Integer) Optional~DatasetMetadata~
+    }
+
+    Subject --> SubjectGroup : belongs to
+    SubjectGroup --> Subject : getSubjects
+    Student ..> Subject : getScore(subject)
+    Student --> ForeignLanguage : foreignLanguageCode
+    StudentRepository --> Student : manages
+    SubjectRepository --> SubjectEntity : manages
+    ScoreDistributionRepository --> ScoreDistribution : manages
+    GroupATopRepository --> GroupATop : manages
+    DatasetMetadataRepository --> DatasetMetadata : manages
+    ScoreBand ..> ScoreBand : of(score)
