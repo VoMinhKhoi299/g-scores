@@ -9,7 +9,7 @@ CREATE TABLE subjects (
 );
 
 CREATE TABLE students (
-    sbd           CHAR(8)      PRIMARY KEY,
+    sbd           VARCHAR(8)   PRIMARY KEY,
     toan          NUMERIC(4,2) CHECK (toan BETWEEN 0 AND 10),
     ngu_van       NUMERIC(4,2) CHECK (ngu_van BETWEEN 0 AND 10),
     ngoai_ngu     NUMERIC(4,2) CHECK (ngoai_ngu BETWEEN 0 AND 10),
@@ -41,7 +41,7 @@ CREATE TABLE score_distribution (
 
 CREATE TABLE group_a_top (
     rank         INTEGER PRIMARY KEY,
-    sbd          CHAR(8)      NOT NULL REFERENCES students (sbd) ON DELETE CASCADE,
+    sbd          VARCHAR(8)   NOT NULL REFERENCES students (sbd) ON DELETE CASCADE,
     toan         NUMERIC(4,2) NOT NULL,
     vat_li       NUMERIC(4,2) NOT NULL,
     hoa_hoc      NUMERIC(4,2) NOT NULL,
