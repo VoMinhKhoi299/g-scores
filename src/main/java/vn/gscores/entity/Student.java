@@ -20,48 +20,43 @@ import java.math.BigDecimal;
 public class Student {
 
     @Id
-    @Column(name = "sbd", length = 8, nullable = false)
+    @Column(name="sbd", length=8, nullable=false)
     private String sbd;
 
-    @Column(name = "toan")
+    @Column(name="toan")
     private BigDecimal math;
 
-    @Column(name = "ngu_van")
+    @Column(name="ngu_van")
     private BigDecimal literature;
 
-    @Column(name = "ngoai_ngu")
+    @Column(name="ngoai_ngu")
     private BigDecimal foreignLanguage;
 
-    @Column(name = "vat_li")
+    @Column(name="vat_li")
     private BigDecimal physics;
 
-    @Column(name = "hoa_hoc")
+    @Column(name="hoa_hoc")
     private BigDecimal chemistry;
 
-    @Column(name = "sinh_hoc")
+    @Column(name="sinh_hoc")
     private BigDecimal biology;
 
-    @Column(name = "lich_su")
+    @Column(name="lich_su")
     private BigDecimal history;
 
-    @Column(name = "dia_li")
+    @Column(name="dia_li")
     private BigDecimal geography;
 
-    @Column(name = "gdcd")
+    @Column(name="gdcd")
     private BigDecimal civicEducation;
 
-    // Null means the student did not take a foreign language exam,
-    // which is different from having a score of zero.
+    // Null co nghia khong thi ngoai ngu
     @Enumerated(EnumType.STRING)
-    @Column(name = "ma_ngoai_ngu", length = 5)
+    @Column(name="ma_ngoai_ngu", length = 5)
     private ForeignLanguage foreignLanguageCode;
 
-    /**
-     * Returns the score of the given subject, or null when the student
-     * did not take that subject.
-     */
-    public BigDecimal getScore(Subject subject) {
-        return switch (subject) {
+    public BigDecimal getScore(Subject subject){
+        return switch(subject) {
             case MATH -> math;
             case LITERATURE -> literature;
             case FOREIGN_LANGUAGE -> foreignLanguage;
@@ -74,3 +69,4 @@ public class Student {
         };
     }
 }
+
