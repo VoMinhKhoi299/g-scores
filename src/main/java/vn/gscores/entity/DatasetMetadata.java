@@ -17,7 +17,7 @@ public class DatasetMetadata {
 
     @Id
     @Column(name="id", nullable = false)
-    private int id;
+    private short id;
 
     @Column(name="source_file", length = 255, nullable = false)
     private String sourceFile;
