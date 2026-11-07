@@ -101,9 +101,15 @@ public class CsvSeeder implements ApplicationRunner {
             jdbcTemplate.execute((ConnectionCallback<Void>) connection -> {
                 CopyManager copyManager =
                         new CopyManager(connection.unwrap(BaseConnection.class));
-                copyManager.copyIn(
-                        "COPY staging FROM STDIN WITH (FORMAT csv, HEADER true)",
-                        input);
+                try {
+                    copyManager.copyIn(
+                            "COPY staging FROM STDIN WITH (FORMAT csv, HEADER true)",
+                            input);
+                } catch (IOException e) {
+                    // ConnectionCallback chi cho phep SQLException,
+                    // nen IOException phai duoc boc lai thanh runtime exception.
+                    throw new UncheckedIOException("Khong doc duoc file dataset", e);
+                }
                 return null;
             });
         } catch (IOException e) {
