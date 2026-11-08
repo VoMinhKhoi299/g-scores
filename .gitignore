@@ -6,10 +6,14 @@
 
 g-scores-backend/FETCH_HEAD
 g-scores-backend/target/
+g-scores-backend/src/test/
 
 g-scores-frontend/node_modules/
 g-scores-frontend/dist/
 g-scores-frontend/coverage/
+g-scores-frontend/src/__tests__/
+g-scores-frontend/src/**/*.spec.*
+g-scores-frontend/src/**/*.test.*
 g-scores-frontend/.env
 g-scores-frontend/.env.*
 !g-scores-frontend/.env.example
