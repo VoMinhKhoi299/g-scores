@@ -1,0 +1,6 @@
+# Cau hinh rieng cho test: dung fixture nho thay dataset 1 trieu dong,
+# de test chay nhanh va ket qua xac dinh.
+# Datasource duoc Testcontainers (ServiceConnection) cung cap lai.
+app:
+  dataset:
+    path: src/test/resources/dataset/test_scores.csv

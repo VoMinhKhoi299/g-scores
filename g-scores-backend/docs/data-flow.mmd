@@ -1,0 +1,42 @@
+flowchart TD
+    CSV["dataset/diem_thi_thpt_2024.csv<br/>1.061.605 dòng x 11 cột"]
+    FLYWAY["Flyway V1__init.sql<br/>tạo 8 bảng"]
+    SEEDER["CsvSeeder<br/>1 transaction"]
+    STU[("students<br/>1.061.605 dòng")]
+    SCORE[("student_scores<br/>6.037.435 dòng")]
+    SUB[("subjects<br/>9 dòng")]
+    GRP[("subject_groups<br/>3 dòng")]
+    GSUB[("group_subjects<br/>9 dòng")]
+    DIST[("score_distribution<br/>36 dòng")]
+    TOP[("group_top_students<br/>30 dòng")]
+    META[("dataset_metadata<br/>1 dòng")]
+
+    CSV -->|"COPY students"| SEEDER
+    CSV -->|"COPY student_scores"| SEEDER
+    SEEDER -->|"Subject.values()"| SUB
+    SEEDER -->|"SubjectGroup.standard()"| GRP
+    SEEDER -->|"nhóm × môn"| GSUB
+    SEEDER -->|"đếm 4 mức x 9 môn"| DIST
+    SEEDER -->|"top 10 x 3 nhóm"| TOP
+    SEEDER --> META
+    FLYWAY -.->|"chạy trước"| SEEDER
+
+    subgraph API["REST API"]
+        A1["GET /api/scores/{sbd}"]
+        A2["GET /api/reports/distribution<br/>?subjectCode="]
+        A3["GET /api/reports/groups"]
+        A4["GET /api/reports/groups/{groupCode}/top"]
+        A5["GET /api/dashboard/summary"]
+    end
+
+    STU --> A1
+    SCORE --> A1
+    DIST --> A2
+    SCORE --> A2
+    GRP --> A3
+    GSUB --> A3
+    TOP --> A4
+    META --> A5
+
+    classDef store fill:#EDE9E1,stroke:#1B2437,stroke-width:1px
+    class STU,SCORE,SUB,GRP,GSUB,DIST,TOP,META store
