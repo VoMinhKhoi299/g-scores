@@ -60,7 +60,7 @@ const links = [
           <div class="brand">
             <img class="brand__logo" src="/assets/gscores-logo.png" alt="GScores" />
           </div>
-          <div class="sidebar__tag">Báo cáo điểm thi THPT 2024</div>
+          <div class="sidebar__tag">Báo cáo điểm thi THPT</div>
         </div>
 
         <nav class="sidebar__nav" aria-label="Điều hướng">
