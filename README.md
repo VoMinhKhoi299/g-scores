@@ -20,6 +20,13 @@
 - **Database:** PostgreSQL
 - **Chạy local:** Docker Compose
 
+## Triển khai
+
+- **Frontend và backend:** Render
+- **Database:** Neon PostgreSQL
+
+Backend đang dùng gói Free của Render nên có thể tự tạm dừng khi không có truy cập. Lần đầu mở các chức năng cần dữ liệu, có thể cần đợi backend khởi động lại một chút. Em xin lỗi vì sự bất tiện này ạ.
+
 ## Chạy trên máy
 
 Cần cài Docker Desktop hoặc Docker Engine có Docker Compose. Tại thư mục gốc của project, chạy:
