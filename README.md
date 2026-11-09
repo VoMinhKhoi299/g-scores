@@ -1,6 +1,6 @@
 # g-scores
 
-Ứng dụng tra cứu và xem thống kê điểm thi THPT Quốc gia năm 2024. Đây là project cá nhân được xây dựng để thực hành phát triển ứng dụng web với frontend, backend và cơ sở dữ liệu.
+Ứng dụng tra cứu và xem thống kê điểm thi THPT Quốc gia năm 2024. Đây là project được xây dựng để thực hành phát triển ứng dụng web cho bài IT Intern Assignment
 
 ## Demo
 
@@ -9,9 +9,9 @@
 
 ## Tính năng
 
-- Xem tổng quan và thống kê điểm thi theo môn.
-- Tra cứu điểm bằng số báo danh.
-- Xem phân bố điểm và thống kê theo tổ hợp môn.
+- Xem tổng quan và thống kê điểm thi theo môn
+- Tra cứu điểm bằng số báo danh
+- Xem phân bố điểm và thống kê theo tổ hợp môn
 
 ## Công nghệ
 
